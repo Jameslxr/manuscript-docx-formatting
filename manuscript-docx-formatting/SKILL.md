@@ -1,6 +1,6 @@
 ---
 name: manuscript-docx-formatting
-description: Convert scientific and biomedical DOCX drafts and submission-package documents into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of natural empty paragraphs, zero paragraph spacing, exact semantic front-matter block gaps, compact official-role CRediT blocks, explicit line spacing, role-aware cover-letter and response-letter rhythm, left-aligned manuscript front matter, continuous Word line and dynamic page numbers, or current target-journal layout. Apply a fail-closed whole-document gate to every modified DOCX. Ask for a target journal only when journal-specific compliance is requested.
+description: Convert scientific and biomedical DOCX drafts and submission-package documents into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of natural empty paragraphs, zero paragraph spacing, exact semantic front-matter block gaps, compact official-role CRediT blocks, source-strength-aware journal typography, explicit line spacing, role-aware cover-letter and response-letter rhythm, left-aligned manuscript front matter, continuous Word line and dynamic page numbers, or current target-journal layout. Apply a fail-closed whole-document gate to every modified DOCX. Ask for a target journal only when journal-specific compliance is requested.
 ---
 
 # Manuscript DOCX Formatting
@@ -74,6 +74,9 @@ possible.
   semantic non-body content for the structural audit.
 - Typography is formal and black. Do not introduce report colors, banners,
   cards, decorative rules, or publication-facsimile styling.
+- Resolve font and line spacing from binding/direct official wording, not from
+  example language. `e.g.`, `for example`, `for instance`, and `such as` do
+  not override the manuscript fallback.
 
 ## Journal-neutral manuscript profile
 
@@ -102,15 +105,25 @@ manuscript to:
 - required title, authors, affiliations, and corresponding-author details in an
   unblinded submission-ready manuscript.
 
+The default hierarchy is exact: Title 15 pt bold; every other visible
+manuscript paragraph, including headings/subheadings, authors, affiliations,
+references, declarations, and table-cell text, 12 pt; headings/subheadings are
+12 pt bold. Preserve supplied capitalization unless a binding official rule
+requires another case treatment. Use double line spacing when no binding/direct
+official value is present.
+
 Use explicit role styles or `--<role>-paragraph` arguments after inventory. Do
 not guess identities from appearance when a draft uses one style for every
 paragraph. In blinded mode, audit identity leakage; do not delete identifying
 content without explicit authorization.
 
-An exact current journal template may override alignment, font, title-page
+Load [references/journal-typography-resolution.md](references/journal-typography-resolution.md)
+for every journal-specific font or line-spacing decision. An exact current
+journal template or binding/direct current instruction may override alignment, font, title-page
 location, anonymization, or page-number placement. Record the official source,
 article type, stage, access date, implementation, and verification. Do not infer
-editable-manuscript layout from a published PDF.
+editable-manuscript layout from a published PDF. Treat an example-only value as
+nonbinding and use the fallback instead.
 
 ## Required workflow
 
@@ -125,6 +138,8 @@ editable-manuscript layout from a published PDF.
    [references/credit-authorship-contract.md](references/credit-authorship-contract.md).
    For cover letters, response letters, or editable package text, instead load
    [references/submission-package-contract.md](references/submission-package-contract.md).
+   In journal mode, also read
+   [references/journal-typography-resolution.md](references/journal-typography-resolution.md).
 4. Resolve artifact lane, body/non-body styles, line spacing, front-matter roles,
    anonymization state, page-number position, and any official journal override.
 5. Edit a distinct copy. Run the applicable manuscript or package profile
@@ -147,7 +162,10 @@ Use the workspace document Python runtime when default Python lacks
 
 ```bash
 python3 "$SKILL_ROOT/scripts/apply_manuscript_profile.py" input.docx \
-  --out normalized.docx --line-spacing double \
+  --out normalized.docx --line-spacing <resolved-token> \
+  --font-name <resolved-family> --body-font-size <resolved-body-pt> \
+  --title-font-size <resolved-title-pt> \
+  --table-font-size <resolved-table-pt> \
   --body-style <body-style> \
   --title-paragraph <n> --authors-paragraph <n> \
   --affiliation-paragraph <n> --author-note-paragraph <optional-n> \
@@ -168,11 +186,16 @@ python3 "$SKILL_ROOT/scripts/audit_docx_front_matter.py" release.docx \
   --mode unblinded --front-matter-alignment left \
   --expected-page-number-position upper-right \
   --expected-line-spacing <resolved-token> \
+  --expected-body-font-size <resolved-body-pt> \
+  --expected-title-font-size <resolved-title-pt> \
   --output-json release.front-matter.json
 
 python3 "$SKILL_ROOT/scripts/audit_docx_semantic_rhythm.py" release.docx \
   --expected-line-spacing <resolved-token> \
-  --expected-body-font-size 12 \
+  --expected-font-name <resolved-family> \
+  --expected-body-font-size <resolved-body-pt> \
+  --expected-title-font-size <resolved-title-pt> \
+  --expected-table-font-size <resolved-table-pt> \
   --output-json release.semantic-rhythm.json
 
 python3 "$SKILL_ROOT/scripts/validate_format_release.py" \
