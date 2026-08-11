@@ -99,9 +99,10 @@ body paragraph, none before Keywords, and exactly one after Keywords. Do not
 substitute paragraph spacing, a manual line break (`Shift+Enter`/`<w:br>`), or
 an empty table row.
 
-For neutral manuscript front matter, require exactly one real empty paragraph
-between the title and first author; keep later front-matter roles compact. For
-CRediT, load
+For manuscript front matter, require exactly one real empty paragraph between
+every adjacent present semantic block: Title, Authors, Affiliations, optional
+Author notes, Correspondence, optional ORCID/identifiers, and Abstract. Keep
+consecutive paragraphs inside one block compact. For CRediT, load
 [credit-authorship-contract.md](credit-authorship-contract.md), use a dedicated
 semantic non-body entry role, require recognized official vocabulary, and keep
 consecutive author entries free of empty separators.
@@ -137,9 +138,11 @@ explicit Word styles; when a draft uses the same style for several roles, pass
 one-based top-level paragraph numbers to the normalizer and audit rather than
 guessing from appearance.
 
-Use `natural-blank` as the neutral title-author gap. Resolve `compact` only from
-an exact current journal/template rule, and pass the same token to the
-normalizer and front-matter audit.
+The semantic block-gap matrix is fixed: exactly one real empty paragraph at each
+present block transition and none within a block. A journal may override
+alignment, typography, title-page location, anonymization, or page-number
+placement, but not this personal house-style construction unless the user
+explicitly changes the invariant.
 
 Run the front-matter normalizer before the numbering enforcer, then run the
 whole-document structural, front-matter, and semantic-rhythm audits. The

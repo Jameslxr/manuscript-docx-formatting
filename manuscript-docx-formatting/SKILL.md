@@ -1,6 +1,6 @@
 ---
 name: manuscript-docx-formatting
-description: Convert scientific and biomedical DOCX drafts and submission-package documents into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of natural empty paragraphs, zero paragraph spacing, one real title-author blank, compact official-role CRediT blocks, explicit line spacing, role-aware cover-letter and response-letter rhythm, left-aligned manuscript front matter, continuous Word line and dynamic page numbers, or current target-journal layout. Apply a fail-closed whole-document gate to every modified DOCX. Ask for a target journal only when journal-specific compliance is requested.
+description: Convert scientific and biomedical DOCX drafts and submission-package documents into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of natural empty paragraphs, zero paragraph spacing, exact semantic front-matter block gaps, compact official-role CRediT blocks, explicit line spacing, role-aware cover-letter and response-letter rhythm, left-aligned manuscript front matter, continuous Word line and dynamic page numbers, or current target-journal layout. Apply a fail-closed whole-document gate to every modified DOCX. Ask for a target journal only when journal-specific compliance is requested.
 ---
 
 # Manuscript DOCX Formatting
@@ -47,13 +47,15 @@ possible.
 - Body prose and empty separators carry the exact resolved line-spacing token;
   default to `double` when no current source specifies another value.
 - In a manuscript, the same resolved line-spacing token also applies to title,
-  authors, affiliations, correspondence, Keywords, every heading/subheading,
-  and declaration/CRediT paragraphs. Do not mix single-spaced front matter or
-  headings with 1.5/double-spaced prose.
-- In an unblinded neutral manuscript, place exactly one structurally empty
-  Enter-created paragraph between the title and first author. Keep it at `0/0
-  pt` with the global line-spacing token; use `compact` only for a sourced exact
-  journal/template override.
+  authors, affiliations, author notes, correspondence, ORCID/identifiers,
+  Keywords, every heading/subheading, and declaration/CRediT paragraphs. Do not
+  mix single-spaced front matter or headings with 1.5/double-spaced prose.
+- In a manuscript, place exactly one structurally empty Enter-created paragraph
+  between every adjacent present front-matter block: Title, Authors,
+  Affiliations, optional Author notes, Correspondence, optional ORCID/identifiers,
+  and Abstract. Keep consecutive paragraphs inside one block compact. Every
+  separator uses `0/0 pt` and the global line-spacing token; there is no compact
+  journal/template bypass for this personal house-style invariant.
 - Treat CRediT as a compact semantic block. Use recognized official role
   vocabulary, place no blank between its heading and first entry, and never
   insert empty paragraphs between consecutive author entries. Do not infer or
@@ -85,9 +87,9 @@ manuscript to:
   token and 0/0 pt paragraph spacing;
 - no table, text box, shape, centered display block, or decorative container for
   title-page content;
-- title, exactly one real empty paragraph, authors, affiliations,
-  correspondence, then one empty paragraph before `Abstract` in the integrated
-  profile;
+- title, authors, affiliations, optional author notes, correspondence, optional
+  ORCID/identifiers, then `Abstract`, with exactly one real empty paragraph
+  between every adjacent present block and none within a multi-paragraph block;
 - a bold `Keywords:` label with regular keyword terms, followed by exactly one
   real empty paragraph before `Introduction` or the next main-text heading;
 - exactly one real empty paragraph before every new section, subsection, and
@@ -146,10 +148,10 @@ Use the workspace document Python runtime when default Python lacks
 ```bash
 python3 "$SKILL_ROOT/scripts/apply_manuscript_profile.py" input.docx \
   --out normalized.docx --line-spacing double \
-  --title-author-gap natural-blank \
   --body-style <body-style> \
   --title-paragraph <n> --authors-paragraph <n> \
-  --affiliation-paragraph <n> --correspondence-paragraph <n>
+  --affiliation-paragraph <n> --author-note-paragraph <optional-n> \
+  --correspondence-paragraph <n> --orcid-paragraph <optional-n>
 
 python3 "$SKILL_ROOT/scripts/enforce_docx_line_page_numbers.py" \
   normalized.docx --out release.docx \
@@ -164,7 +166,6 @@ python3 "$SKILL_ROOT/scripts/audit_docx_manuscript_style.py" \
 
 python3 "$SKILL_ROOT/scripts/audit_docx_front_matter.py" release.docx \
   --mode unblinded --front-matter-alignment left \
-  --expected-title-author-gap natural-blank \
   --expected-page-number-position upper-right \
   --expected-line-spacing <resolved-token> \
   --output-json release.front-matter.json
