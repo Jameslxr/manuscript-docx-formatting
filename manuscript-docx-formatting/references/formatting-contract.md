@@ -38,8 +38,9 @@ For journal typography, load
 complete official sentence and its scope. A value introduced only by `e.g.`,
 `for example`, `for instance`, or `such as` is illustrative and cannot override
 the fallback. When font or line spacing is silent/example-only, use Times New
-Roman, Title 15 pt bold, every other visible manuscript paragraph 12 pt,
-headings/subheadings 12 pt bold, and double line spacing.
+Roman, Title 15 pt bold, visible top-level manuscript text 12 pt,
+headings/subheadings 12 pt bold, table-cell text 10 pt, double line spacing
+outside tables, and single table-cell line spacing.
 
 ## Content-preservation boundary
 
@@ -220,8 +221,9 @@ Deliver:
 - rendered visual-QA status: `PASS` or `NOT ASSESSABLE`
 - content-preservation status based on an extracted-text comparison
 - the resolved line-spacing token and body/non-body style classification
-- the resolved title/body/table font values, exact source excerpt, and rule
-  strength; an example-only value must be recorded as fallback, not official
+- the resolved title/body/table font values and manuscript/table line-spacing
+  tokens, exact source excerpt, and rule strength; an example-only value must
+  be recorded as fallback, not official
 - for journal mode, the source-linked checklist and any invariant/template
   conflicts
 

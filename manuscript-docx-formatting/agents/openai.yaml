@@ -1,4 +1,4 @@
 interface:
   display_name: "Manuscript DOCX Formatting"
   short_description: "Format manuscript and submission-package DOCX files"
-  default_prompt: "Use $manuscript-docx-formatting to turn this manuscript, cover letter, response letter, or editable package draft into a natural submission-style DOCX, treating example-only journal typography as nonbinding and verifying the resolved font sizes, line spacing, front-matter gaps, and semantic blank lines without scientific review."
+  default_prompt: "Use $manuscript-docx-formatting to turn this manuscript, cover letter, response letter, or editable package draft into a natural submission-style DOCX, treating example-only journal typography as nonbinding and independently verifying manuscript and table font sizes, line spacing, front-matter gaps, and semantic blank lines without scientific review."

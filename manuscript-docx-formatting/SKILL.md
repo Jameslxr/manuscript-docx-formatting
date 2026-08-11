@@ -50,6 +50,10 @@ possible.
   authors, affiliations, author notes, correspondence, ORCID/identifiers,
   Keywords, every heading/subheading, and declaration/CRediT paragraphs. Do not
   mix single-spaced front matter or headings with 1.5/double-spaced prose.
+- Resolve table-cell typography independently. Unless a binding/direct current
+  source specifies otherwise, use 10 pt table-cell text with single line
+  spacing and 0/0 pt paragraph spacing; keep table titles/captions at the body
+  size and manuscript line-spacing token.
 - In a manuscript, place exactly one structurally empty Enter-created paragraph
   between every adjacent present front-matter block: Title, Authors,
   Affiliations, optional Author notes, Correspondence, optional ORCID/identifiers,
@@ -105,12 +109,13 @@ manuscript to:
 - required title, authors, affiliations, and corresponding-author details in an
   unblinded submission-ready manuscript.
 
-The default hierarchy is exact: Title 15 pt bold; every other visible
-manuscript paragraph, including headings/subheadings, authors, affiliations,
-references, declarations, and table-cell text, 12 pt; headings/subheadings are
-12 pt bold. Preserve supplied capitalization unless a binding official rule
-requires another case treatment. Use double line spacing when no binding/direct
-official value is present.
+The default hierarchy is exact: Title 15 pt bold; visible top-level manuscript
+text, including headings/subheadings, authors, affiliations, table captions,
+references, and declarations, 12 pt; headings/subheadings are 12 pt bold;
+table-cell text, including table notes placed inside the table, is 10 pt and
+single-spaced. Preserve supplied capitalization unless a binding official rule
+requires another case treatment. Use double line spacing outside tables when
+no binding/direct official value is present.
 
 Use explicit role styles or `--<role>-paragraph` arguments after inventory. Do
 not guess identities from appearance when a draft uses one style for every
@@ -166,6 +171,7 @@ python3 "$SKILL_ROOT/scripts/apply_manuscript_profile.py" input.docx \
   --font-name <resolved-family> --body-font-size <resolved-body-pt> \
   --title-font-size <resolved-title-pt> \
   --table-font-size <resolved-table-pt> \
+  --table-line-spacing <resolved-table-spacing-token> \
   --body-style <body-style> \
   --title-paragraph <n> --authors-paragraph <n> \
   --affiliation-paragraph <n> --author-note-paragraph <optional-n> \
@@ -196,6 +202,7 @@ python3 "$SKILL_ROOT/scripts/audit_docx_semantic_rhythm.py" release.docx \
   --expected-body-font-size <resolved-body-pt> \
   --expected-title-font-size <resolved-title-pt> \
   --expected-table-font-size <resolved-table-pt> \
+  --expected-table-line-spacing <resolved-table-spacing-token> \
   --output-json release.semantic-rhythm.json
 
 python3 "$SKILL_ROOT/scripts/validate_format_release.py" \
