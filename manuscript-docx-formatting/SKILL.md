@@ -45,6 +45,10 @@ possible.
   manual line break as a substitute.
 - Body prose and empty separators carry the exact resolved line-spacing token;
   default to `double` when no current source specifies another value.
+- In a manuscript, the same resolved line-spacing token also applies to title,
+  authors, affiliations, correspondence, Keywords, every heading/subheading,
+  and declaration/CRediT paragraphs. Do not mix single-spaced front matter or
+  headings with 1.5/double-spaced prose.
 - Every section has continuous Word-native line numbering (`countBy=1`), with no
   paragraph-level suppression.
 - Every active page story has one dynamic `PAGE` field, continuous across
@@ -61,15 +65,21 @@ When no current official source resolves a different rule, normalize a
 manuscript to:
 
 - 1-inch margins and top vertical alignment;
-- left-aligned title (Times New Roman 15 pt bold), authors (12 pt), affiliations
-  (10.5 pt), and correspondence (10.5 pt), all single-spaced with 0/0 pt
-  paragraph spacing;
+- left-aligned title (Times New Roman 15 pt bold), plus authors, affiliations,
+  correspondence, Keywords, headings, declaration text, and body prose all at
+  the resolved body size (12 pt fallback), with one global resolved line-spacing
+  token and 0/0 pt paragraph spacing;
 - no table, text box, shape, centered display block, or decorative container for
   title-page content;
 - title, authors, affiliations, correspondence, then one empty paragraph before
   `Abstract` in the integrated profile;
-- left-aligned 12 pt bold headings, 12 pt double-spaced body prose, and 11 pt
-  Keywords;
+- a bold `Keywords:` label with regular keyword terms, followed by exactly one
+  real empty paragraph before `Introduction` or the next main-text heading;
+- exactly one real empty paragraph before every new section, subsection, and
+  declaration/CRediT block; no empty paragraph between a heading and its first
+  body paragraph; collapse missing or duplicated semantic separators;
+- a dedicated non-body reference role after `References`/`Bibliography`; never
+  insert body-prose separators between reference entries;
 - required title, authors, affiliations, and corresponding-author details in an
   unblinded submission-ready manuscript.
 
@@ -99,8 +109,8 @@ editable-manuscript layout from a published PDF.
 6. Compare extracted text before and after. Any unauthorized text-node change is
    a failure.
 7. Run the structural audit with every used top-level style classified. For a
-   manuscript, separately run the front-matter audit. Fix and rerun until both
-   pass.
+   manuscript, separately run the front-matter and semantic-rhythm audits. Fix
+   and rerun until all three pass.
 8. Render every page after the last layout-sensitive change. Inspect page 1 and
    every remaining page at readable zoom, then rerender after corrections.
 9. Combine the independent gates with `validate_format_release.py`. Do not call
@@ -132,10 +142,17 @@ python3 "$SKILL_ROOT/scripts/audit_docx_manuscript_style.py" \
 python3 "$SKILL_ROOT/scripts/audit_docx_front_matter.py" release.docx \
   --mode unblinded --front-matter-alignment left \
   --expected-page-number-position upper-right \
+  --expected-line-spacing <resolved-token> \
   --output-json release.front-matter.json
+
+python3 "$SKILL_ROOT/scripts/audit_docx_semantic_rhythm.py" release.docx \
+  --expected-line-spacing <resolved-token> \
+  --expected-body-font-size 12 \
+  --output-json release.semantic-rhythm.json
 
 python3 "$SKILL_ROOT/scripts/validate_format_release.py" \
   release.structural.json release.front-matter.json \
+  release.semantic-rhythm.json \
   --content-preservation-status PASS \
   --journal-status NOT_APPLICABLE --render-status PASS \
   --output-json release.format-release.json
@@ -160,5 +177,5 @@ or successful submission.
 
 This is a runtime-independent copy of the formatting lane retained in
 `manuscript-review-revision`; never import from that sibling at runtime. When a
-baseline invariant changes, update and retest both copies. Front-matter profile
-logic can evolve here independently and should remain modular.
+baseline or semantic-rhythm invariant changes, update and retest both copies.
+Front-matter profile logic can evolve here independently and should remain modular.

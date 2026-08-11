@@ -5,7 +5,7 @@
 这是一个独立的 Codex / Agent Skill，用于把科学和生物医学 DOCX 草稿转换成节制、自然、接近人工编辑的投稿格式。它只处理排版，不自动改动科研结论、引文或文章结构。
 
 [![Validate skill](https://github.com/Jameslxr/manuscript-docx-formatting/actions/workflows/validate.yml/badge.svg)](https://github.com/Jameslxr/manuscript-docx-formatting/actions/workflows/validate.yml)
-![Version](https://img.shields.io/badge/version-v1.0.0-2563eb)
+![Version](https://img.shields.io/badge/version-v1.0.1-2563eb)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 
 ## 核心功能
@@ -13,10 +13,15 @@
 - 将正文段前/段后间距设为 `0 pt`，并清除 Word 隐藏自动段距。
 - 在相邻正文段落之间插入且仅插入一个真实空白段落，不用 paragraph spacing 伪造空行。
 - 强制显式行距；没有官方要求时默认双倍行距。
+- 将同一个已解析行距应用到作者、单位、通讯信息、Keywords、全部标题/
+  小标题、正文和 CRediT/声明区；这些角色默认与正文同为 12 pt。
+- `Keywords:` 和行内声明标签仅标签加粗；Keywords 后、每个新 section/
+  subsection/声明区前恰好一个真实空段落，标题与首段正文之间不放空段落。
+- `References/Bibliography` 后的条目保持独立非正文角色，不在参考文献条目之间插入正文空行。
 - 使用 Word 原生连续行号和动态 `PAGE` 页码。
 - 将标题、作者、单位和通讯信息调整为节制的左对齐 manuscript 首页；精确期刊模板可以覆盖。
 - 支持当前期刊、文章类型和投稿阶段的官方格式覆盖。
-- 分别检查结构、首页、内容保留、期刊规则和逐页渲染；只有全部通过才返回 `FORMAT_RELEASE_PASS`。
+- 分别检查结构、首页、语义纵向节奏、内容保留、期刊规则和逐页渲染；只有全部通过才返回 `FORMAT_RELEASE_PASS`。
 
 ## 安装
 
@@ -73,7 +78,7 @@ python3 -m py_compile manuscript-docx-formatting/scripts/*.py
 python3 -m unittest discover -s manuscript-docx-formatting/tests -v
 ```
 
-当前回归套件包含 14 个测试，覆盖真实空段落、隐藏自动段距、行/页码、首页对齐、多种对抗性首页、幂等修复、文字保留和 fail-closed 发布。
+当前回归套件包含 17 个测试，新增覆盖作者/单位字号、全局双倍与 1.5 倍行距、Keywords 标签、section/subsection 边界，以及 Author Contributions/CRediT 的缺失和重复空行；同时继续覆盖真实空段落、隐藏自动段距、行/页码、对抗性首页、幂等修复、文字保留和 fail-closed 发布。
 
 ## License
 
