@@ -1,4 +1,4 @@
 interface:
   display_name: "Manuscript DOCX Formatting"
-  short_description: "Create natural submission-style manuscript DOCX files"
-  default_prompt: "Use $manuscript-docx-formatting to turn this draft into a natural submission-style DOCX with one resolved line spacing, body-sized author roles, and verified semantic blank lines without scientific review."
+  short_description: "Format manuscript and submission-package DOCX files"
+  default_prompt: "Use $manuscript-docx-formatting to turn this manuscript, cover letter, response letter, or editable package draft into a natural submission-style DOCX with one resolved line spacing and verified semantic blank lines without scientific review."
