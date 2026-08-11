@@ -90,9 +90,13 @@ For body prose and the empty separator:
   effective paragraph/style chain
 - explicit line spacing equals the resolved token
 
-Do not insert separators around titles, headings, lists, captions, equations,
-figures, tables, or bibliography entries. Do not substitute paragraph spacing,
-a manual line break (`Shift+Enter`/`<w:br>`), or an empty table row.
+Do not insert body-paragraph separators around titles, lists, captions,
+equations, figures, tables, or bibliography entries. Semantic manuscript
+boundaries use a separate matrix: exactly one real empty paragraph before a new
+section/subsection/declaration heading, none between a heading and its first
+body paragraph, none before Keywords, and exactly one after Keywords. Do not
+substitute paragraph spacing, a manual line break (`Shift+Enter`/`<w:br>`), or
+an empty table row.
 
 This construction is a user-level output invariant, not a claim about every
 journal's native style. Record any template conflict instead of bypassing it.
@@ -125,10 +129,10 @@ explicit Word styles; when a draft uses the same style for several roles, pass
 one-based top-level paragraph numbers to the normalizer and audit rather than
 guessing from appearance.
 
-Run the front-matter normalizer before the numbering enforcer, then run both the
-whole-document structural audit and the front-matter audit. The manuscript
-profile does not apply to cover letters, response letters, or supplements that
-do not have a manuscript title block.
+Run the front-matter normalizer before the numbering enforcer, then run the
+whole-document structural, front-matter, and semantic-rhythm audits. The
+manuscript profile does not apply to cover letters, response letters, or
+supplements that do not have a manuscript title block.
 
 ## Journal-specific formatting
 
@@ -173,6 +177,8 @@ Deliver:
 - a new formatted DOCX, never the overwritten source
 - a JSON mechanical audit showing `MECHANICAL_PASS`
 - for a manuscript, a JSON front-matter audit showing `FRONT_MATTER_PASS`
+- for a manuscript, a JSON semantic-rhythm audit showing
+  `SEMANTIC_RHYTHM_PASS`
 - rendered visual-QA status: `PASS` or `NOT ASSESSABLE`
 - content-preservation status based on an extracted-text comparison
 - the resolved line-spacing token and body/non-body style classification
@@ -181,6 +187,6 @@ Deliver:
 
 Do not call the file “journal compliant” if a mandatory journal check is
 `FAIL`/`NOT ASSESSABLE`, or “fully verified” if page rendering was not inspected.
-For manuscripts, combine the structural, front-matter, preservation, journal,
-and render gates with `validate_format_release.py`; only
+For manuscripts, combine the structural, front-matter, semantic-rhythm,
+preservation, journal, and render gates with `validate_format_release.py`; only
 `FORMAT_RELEASE_PASS` closes the resolved formatting contract.
