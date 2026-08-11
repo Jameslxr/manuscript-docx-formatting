@@ -8,9 +8,10 @@
 4. [Natural paragraph construction](#natural-paragraph-construction)
 5. [Line and page numbering](#line-and-page-numbering)
 6. [Manuscript front matter](#manuscript-front-matter)
-7. [Journal-specific formatting](#journal-specific-formatting)
-8. [Rendered-page QA](#rendered-page-qa)
-9. [Delivery evidence](#delivery-evidence)
+7. [Submission-package files](#submission-package-files)
+8. [Journal-specific formatting](#journal-specific-formatting)
+9. [Rendered-page QA](#rendered-page-qa)
+10. [Delivery evidence](#delivery-evidence)
 
 ## Authority and modes
 
@@ -134,6 +135,14 @@ whole-document structural, front-matter, and semantic-rhythm audits. The
 manuscript profile does not apply to cover letters, response letters, or
 supplements that do not have a manuscript title block.
 
+## Submission-package files
+
+Load [submission-package-contract.md](submission-package-contract.md) for cover
+letters, response letters, highlights, declarations, review proposals, and
+other editable submission text. The manuscript normalizer is not a substitute:
+package files require role-aware salutation/body/closing/signature or
+comment/response boundaries and a package-wide typography audit.
+
 ## Journal-specific formatting
 
 When the user explicitly requests a journal format, record a compact checklist
@@ -179,6 +188,8 @@ Deliver:
 - for a manuscript, a JSON front-matter audit showing `FRONT_MATTER_PASS`
 - for a manuscript, a JSON semantic-rhythm audit showing
   `SEMANTIC_RHYTHM_PASS`
+- for a package file, a JSON whole-document audit showing
+  `SUBMISSION_PACKAGE_PASS`
 - rendered visual-QA status: `PASS` or `NOT ASSESSABLE`
 - content-preservation status based on an extracted-text comparison
 - the resolved line-spacing token and body/non-body style classification
@@ -189,4 +200,6 @@ Do not call the file “journal compliant” if a mandatory journal check is
 `FAIL`/`NOT ASSESSABLE`, or “fully verified” if page rendering was not inspected.
 For manuscripts, combine the structural, front-matter, semantic-rhythm,
 preservation, journal, and render gates with `validate_format_release.py`; only
-`FORMAT_RELEASE_PASS` closes the resolved formatting contract.
+`FORMAT_RELEASE_PASS` closes the resolved formatting contract. For a package
+file, use `validate_submission_package_release.py`; only
+`PACKAGE_FORMAT_RELEASE_PASS` closes the package contract.

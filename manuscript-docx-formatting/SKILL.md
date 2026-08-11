@@ -1,6 +1,6 @@
 ---
 name: manuscript-docx-formatting
-description: Convert scientific and biomedical DOCX drafts into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of natural empty paragraphs, zero paragraph spacing, explicit line spacing, left-aligned manuscript front matter, formal black typography, continuous Word line numbers, dynamic page numbers, margins, headings, or current target-journal layout. Apply the baseline whole-document gate to every modified DOCX, including manuscripts, cover letters, response letters, and editable supplements. Ask for a target journal only when journal-specific compliance is requested.
+description: Convert scientific and biomedical DOCX drafts and submission-package documents into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of natural empty paragraphs, zero paragraph spacing, explicit line spacing, role-aware cover-letter and response-letter rhythm, left-aligned manuscript front matter, formal black typography, continuous Word line numbers, dynamic page numbers, margins, headings, or current target-journal layout. Apply a fail-closed whole-document gate to every modified DOCX. Ask for a target journal only when journal-specific compliance is requested.
 ---
 
 # Manuscript DOCX Formatting
@@ -23,8 +23,9 @@ Select the smallest applicable lane:
 | Lane | Trigger | Required work |
 |---|---|---|
 | `audit-only` | diagnose formatting without edits | inventory, applicable audits, full rendering |
-| `baseline-fix` | any DOCX format edit, cover letter, response letter, supplement | whole-document paragraph, spacing, typography, line/page-number gate |
+| `baseline-fix` | a simple DOCX format edit | whole-document paragraph, spacing, typography, line/page-number gate |
 | `manuscript-profile` | a manuscript draft must become natural and submission-style | baseline plus deterministic front-matter normalization and audit |
+| `submission-package-profile` | cover letter, response letter, highlights, declaration, or editable package text | baseline plus role-aware package normalization and package audit |
 | `journal-format` | named journal or supplied template | applicable lane plus current official source-linked overrides |
 
 The lanes are modular, but the baseline gate is not optional after a write. A
@@ -49,6 +50,11 @@ possible.
   authors, affiliations, correspondence, Keywords, every heading/subheading,
   and declaration/CRediT paragraphs. Do not mix single-spaced front matter or
   headings with 1.5/double-spaced prose.
+- In a submission-package file, one resolved token applies to every visible
+  body and table-cell paragraph, including salutation, body, closing,
+  signature, reviewer-comment, response, declaration, and empty separators.
+  Use `single` as the package fallback when no current journal source or user
+  instruction specifies another token.
 - Every section has continuous Word-native line numbering (`countBy=1`), with no
   paragraph-level suppression.
 - Every active page story has one dynamic `PAGE` field, continuous across
@@ -102,19 +108,22 @@ editable-manuscript layout from a published PDF.
 3. Read [references/formatting-contract.md](references/formatting-contract.md).
    For manuscripts, also read
    [references/front-matter-contract.md](references/front-matter-contract.md).
+   For cover letters, response letters, or editable package text, instead load
+   [references/submission-package-contract.md](references/submission-package-contract.md).
 4. Resolve artifact lane, body/non-body styles, line spacing, front-matter roles,
    anonymization state, page-number position, and any official journal override.
-5. Edit a distinct copy. For manuscripts, run the profile normalizer before the
-   numbering enforcer. Never overwrite the source.
+5. Edit a distinct copy. Run the applicable manuscript or package profile
+   normalizer before the numbering enforcer. Never overwrite the source.
 6. Compare extracted text before and after. Any unauthorized text-node change is
    a failure.
-7. Run the structural audit with every used top-level style classified. For a
-   manuscript, separately run the front-matter and semantic-rhythm audits. Fix
-   and rerun until all three pass.
+7. For a manuscript, run the structural, front-matter, and semantic-rhythm
+   audits. For a submission package, run its whole-document package audit. Fix
+   and rerun until all applicable audits pass.
 8. Render every page after the last layout-sensitive change. Inspect page 1 and
    every remaining page at readable zoom, then rerender after corrections.
-9. Combine the independent gates with `validate_format_release.py`. Do not call
-   the work fully verified unless it returns `FORMAT_RELEASE_PASS`.
+9. Combine manuscript gates with `validate_format_release.py` or package gates
+   with `validate_submission_package_release.py`. Do not call the work fully
+   verified without the corresponding release-pass status.
 
 ## Command sequence
 
@@ -162,8 +171,9 @@ Accepted line-spacing tokens include `single`, `1.15`, `1.5`, `double`, a
 positive multiple, `exact:24pt`, and `at-least:14pt`.
 
 For a non-manuscript artifact, the front-matter gate is not applicable. Report
-the baseline structural, preservation, journal, and render gates directly; do
-not fabricate a manuscript title block merely to satisfy the manuscript audit.
+the package, preservation, journal, and render gates; do not fabricate a
+manuscript title block. Use the separate sequence in
+[references/submission-package-contract.md](references/submission-package-contract.md).
 
 ## Delivery and claim boundary
 
@@ -171,7 +181,8 @@ Deliver a new DOCX, the applicable JSON audit reports, and a concise record of
 rules, source-linked overrides, conflicts, content-preservation status, and
 visual QA. `FORMAT_RELEASE_PASS` verifies the resolved formatting contract; it
 does not verify scientific accuracy, citation validity, editorial acceptance,
-or successful submission.
+or successful submission. For a package file, the equivalent status is
+`PACKAGE_FORMAT_RELEASE_PASS`.
 
 ## Maintenance boundary
 
