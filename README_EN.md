@@ -5,7 +5,7 @@
 An independent Codex / Agent Skill that converts scientific and biomedical DOCX drafts into restrained, natural, author-prepared submission manuscripts. It performs format-only repair and does not automatically change scientific claims, citations, or article structure.
 
 [![Validate skill](https://github.com/Jameslxr/manuscript-docx-formatting/actions/workflows/validate.yml/badge.svg)](https://github.com/Jameslxr/manuscript-docx-formatting/actions/workflows/validate.yml)
-![Version](https://img.shields.io/badge/version-v1.0.1-2563eb)
+![Version](https://img.shields.io/badge/version-v1.2.0-2563eb)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 
 ## Features
@@ -23,6 +23,8 @@ An independent Codex / Agent Skill that converts scientific and biomedical DOCX 
   never inserts body-prose blank separators between reference entries.
 - Adds continuous Word-native line numbering and dynamic `PAGE` fields.
 - Normalizes title, authors, affiliations, and correspondence into restrained left-aligned manuscript front matter unless an exact current journal source overrides it.
+- Requires and audits one real Enter-created paragraph between Title and Authors; only a sourced journal/template rule may switch to the compact override.
+- Treats CRediT as a compact semantic block, checks the official 14-role vocabulary, and prohibits empty paragraphs between consecutive author entries.
 - Supports journal-, article-type-, and submission-stage-specific official formatting overrides.
 - Separately verifies structure, front matter, semantic vertical rhythm, content preservation, journal rules, and every rendered page; only a complete pass returns `FORMAT_RELEASE_PASS`.
 
@@ -80,7 +82,7 @@ python3 -m py_compile manuscript-docx-formatting/scripts/*.py
 python3 -m unittest discover -s manuscript-docx-formatting/tests -v
 ```
 
-The current 17-test regression suite adds coverage for author/affiliation size, global double and 1.5 line spacing, Keywords labels, section/subsection boundaries, and missing or duplicated Author Contributions/CRediT blanks. It also retains coverage for literal blank paragraphs, hidden auto-spacing, line/page numbering, adversarial title pages, idempotent repair, text preservation, and fail-closed release composition.
+The current 23-test regression suite covers the real Title–Authors blank and sourced compact override, compact CRediT author entries, official role vocabulary, author/affiliation size, global double and 1.5 line spacing, Keywords and section/subsection boundaries, literal body blanks, hidden auto-spacing, line/page numbering, adversarial title pages, idempotent repair, text preservation, and fail-closed release composition.
 
 ## License
 

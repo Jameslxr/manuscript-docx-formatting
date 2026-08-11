@@ -1,6 +1,6 @@
 ---
 name: manuscript-docx-formatting
-description: Convert scientific and biomedical DOCX drafts and submission-package documents into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of natural empty paragraphs, zero paragraph spacing, explicit line spacing, role-aware cover-letter and response-letter rhythm, left-aligned manuscript front matter, formal black typography, continuous Word line numbers, dynamic page numbers, margins, headings, or current target-journal layout. Apply a fail-closed whole-document gate to every modified DOCX. Ask for a target journal only when journal-specific compliance is requested.
+description: Convert scientific and biomedical DOCX drafts and submission-package documents into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of natural empty paragraphs, zero paragraph spacing, one real title-author blank, compact official-role CRediT blocks, explicit line spacing, role-aware cover-letter and response-letter rhythm, left-aligned manuscript front matter, continuous Word line and dynamic page numbers, or current target-journal layout. Apply a fail-closed whole-document gate to every modified DOCX. Ask for a target journal only when journal-specific compliance is requested.
 ---
 
 # Manuscript DOCX Formatting
@@ -50,6 +50,14 @@ possible.
   authors, affiliations, correspondence, Keywords, every heading/subheading,
   and declaration/CRediT paragraphs. Do not mix single-spaced front matter or
   headings with 1.5/double-spaced prose.
+- In an unblinded neutral manuscript, place exactly one structurally empty
+  Enter-created paragraph between the title and first author. Keep it at `0/0
+  pt` with the global line-spacing token; use `compact` only for a sourced exact
+  journal/template override.
+- Treat CRediT as a compact semantic block. Use recognized official role
+  vocabulary, place no blank between its heading and first entry, and never
+  insert empty paragraphs between consecutive author entries. Do not infer or
+  rewrite author roles during format-only work.
 - In a submission-package file, one resolved token applies to every visible
   body and table-cell paragraph, including salutation, body, closing,
   signature, reviewer-comment, response, declaration, and empty separators.
@@ -77,13 +85,16 @@ manuscript to:
   token and 0/0 pt paragraph spacing;
 - no table, text box, shape, centered display block, or decorative container for
   title-page content;
-- title, authors, affiliations, correspondence, then one empty paragraph before
-  `Abstract` in the integrated profile;
+- title, exactly one real empty paragraph, authors, affiliations,
+  correspondence, then one empty paragraph before `Abstract` in the integrated
+  profile;
 - a bold `Keywords:` label with regular keyword terms, followed by exactly one
   real empty paragraph before `Introduction` or the next main-text heading;
 - exactly one real empty paragraph before every new section, subsection, and
   declaration/CRediT block; no empty paragraph between a heading and its first
   body paragraph; collapse missing or duplicated semantic separators;
+- a dedicated non-body CRediT-entry role with recognized official vocabulary;
+  keep supplied per-author paragraphs consecutive without empty separators;
 - a dedicated non-body reference role after `References`/`Bibliography`; never
   insert body-prose separators between reference entries;
 - required title, authors, affiliations, and corresponding-author details in an
@@ -108,6 +119,8 @@ editable-manuscript layout from a published PDF.
 3. Read [references/formatting-contract.md](references/formatting-contract.md).
    For manuscripts, also read
    [references/front-matter-contract.md](references/front-matter-contract.md).
+   When a manuscript contains or needs a CRediT statement, also read
+   [references/credit-authorship-contract.md](references/credit-authorship-contract.md).
    For cover letters, response letters, or editable package text, instead load
    [references/submission-package-contract.md](references/submission-package-contract.md).
 4. Resolve artifact lane, body/non-body styles, line spacing, front-matter roles,
@@ -133,6 +146,7 @@ Use the workspace document Python runtime when default Python lacks
 ```bash
 python3 "$SKILL_ROOT/scripts/apply_manuscript_profile.py" input.docx \
   --out normalized.docx --line-spacing double \
+  --title-author-gap natural-blank \
   --body-style <body-style> \
   --title-paragraph <n> --authors-paragraph <n> \
   --affiliation-paragraph <n> --correspondence-paragraph <n>
@@ -150,6 +164,7 @@ python3 "$SKILL_ROOT/scripts/audit_docx_manuscript_style.py" \
 
 python3 "$SKILL_ROOT/scripts/audit_docx_front_matter.py" release.docx \
   --mode unblinded --front-matter-alignment left \
+  --expected-title-author-gap natural-blank \
   --expected-page-number-position upper-right \
   --expected-line-spacing <resolved-token> \
   --output-json release.front-matter.json

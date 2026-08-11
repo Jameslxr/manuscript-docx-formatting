@@ -99,6 +99,13 @@ body paragraph, none before Keywords, and exactly one after Keywords. Do not
 substitute paragraph spacing, a manual line break (`Shift+Enter`/`<w:br>`), or
 an empty table row.
 
+For neutral manuscript front matter, require exactly one real empty paragraph
+between the title and first author; keep later front-matter roles compact. For
+CRediT, load
+[credit-authorship-contract.md](credit-authorship-contract.md), use a dedicated
+semantic non-body entry role, require recognized official vocabulary, and keep
+consecutive author entries free of empty separators.
+
 This construction is a user-level output invariant, not a claim about every
 journal's native style. Record any template conflict instead of bypassing it.
 
@@ -129,6 +136,10 @@ affiliations, correspondence, Abstract, and Keywords before repair. Prefer
 explicit Word styles; when a draft uses the same style for several roles, pass
 one-based top-level paragraph numbers to the normalizer and audit rather than
 guessing from appearance.
+
+Use `natural-blank` as the neutral title-author gap. Resolve `compact` only from
+an exact current journal/template rule, and pass the same token to the
+normalizer and front-matter audit.
 
 Run the front-matter normalizer before the numbering enforcer, then run the
 whole-document structural, front-matter, and semantic-rhythm audits. The

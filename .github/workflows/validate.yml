@@ -38,6 +38,7 @@ jobs:
           test -f manuscript-docx-formatting/agents/openai.yaml
           test -f manuscript-docx-formatting/references/formatting-contract.md
           test -f manuscript-docx-formatting/references/front-matter-contract.md
+          test -f manuscript-docx-formatting/references/credit-authorship-contract.md
           test -z "$(git ls-files | grep -E '(^|/)__pycache__/|\.pyc$' | head -1)"
 
       - name: Run regression tests
