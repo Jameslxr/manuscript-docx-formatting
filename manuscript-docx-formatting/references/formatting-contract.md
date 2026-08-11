@@ -33,6 +33,14 @@ repair or are visibly non-manuscript styling.
 For `audit-only`, do not modify the file. Run the inventory, mechanical audit,
 and rendered-page inspection, then report exact failures.
 
+For journal typography, load
+[journal-typography-resolution.md](journal-typography-resolution.md). Read the
+complete official sentence and its scope. A value introduced only by `e.g.`,
+`for example`, `for instance`, or `such as` is illustrative and cannot override
+the fallback. When font or line spacing is silent/example-only, use Times New
+Roman, Title 15 pt bold, every other visible manuscript paragraph 12 pt,
+headings/subheadings 12 pt bold, and double line spacing.
+
 ## Content-preservation boundary
 
 Before editing, record the source file's SHA-256 and save to a distinct output
@@ -172,6 +180,11 @@ with one row per applicable rule:
 | `verification` | mechanical or visual check |
 | `status` | `PASS`, `FAIL`, or `NOT ASSESSABLE` |
 
+For font and line-spacing rows, also record the exact source excerpt and rule
+strength from `MANDATORY`, `EXPLICIT_REQUIREMENT`, `EXAMPLE_ONLY`,
+`UNSPECIFIED`, or `NOT_ASSESSABLE`. Only the first two can create an official
+override.
+
 Confirm the exact journal, article type, and submission stage. Initial
 submission, revision, accepted manuscript, and proof stages can differ. Do not
 reuse another article type's template or an old publisher-wide profile as
@@ -207,6 +220,8 @@ Deliver:
 - rendered visual-QA status: `PASS` or `NOT ASSESSABLE`
 - content-preservation status based on an extracted-text comparison
 - the resolved line-spacing token and body/non-body style classification
+- the resolved title/body/table font values, exact source excerpt, and rule
+  strength; an example-only value must be recorded as fallback, not official
 - for journal mode, the source-linked checklist and any invariant/template
   conflicts
 
