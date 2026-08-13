@@ -1,6 +1,6 @@
 ---
 name: manuscript-docx-formatting
-description: Convert scientific and biomedical DOCX drafts and submission-package documents into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of natural empty paragraphs, zero paragraph spacing, exact semantic front-matter block gaps, compact official-role CRediT blocks, source-strength-aware journal typography, explicit line spacing, role-aware cover-letter and response-letter rhythm, left-aligned manuscript front matter, continuous Word line and dynamic page numbers, or current target-journal layout. Apply a fail-closed whole-document gate to every modified DOCX. Ask for a target journal only when journal-specific compliance is requested.
+description: Convert scientific and biomedical DOCX drafts and submission-package documents into restrained, natural, submission-style Word files without scientific review. Use for format-only repair or audit of genuinely empty paragraphs with no spaces or tabs, zero paragraph spacing, compact semantic lists, top-journal table presentation, exact semantic front-matter block gaps, compact official-role CRediT blocks, source-strength-aware journal typography, explicit line spacing, role-aware cover-letter and response-letter rhythm, left-aligned manuscript front matter, continuous Word line and dynamic page numbers, or current target-journal layout. Apply a fail-closed whole-document gate to every modified DOCX. Ask for a target journal only when journal-specific compliance is requested.
 ---
 
 # Manuscript DOCX Formatting
@@ -44,6 +44,9 @@ possible.
 - Adjacent body-prose paragraphs are separated by exactly one structurally empty
   Word paragraph: `text¶`, `¶`, `next text¶`. Never use paragraph spacing or a
   manual line break as a substitute.
+- A blank paragraph contains no spaces, tabs, nonbreaking spaces, or
+  whitespace-only text nodes. Remove such whitespace and keep one truly empty
+  paragraph; never combine paragraph spacing with an empty paragraph.
 - Body prose and empty separators carry the exact resolved line-spacing token;
   default to `double` when no current source specifies another value.
 - In a manuscript, the same resolved line-spacing token also applies to title,
@@ -54,6 +57,12 @@ possible.
   source specifies otherwise, use 10 pt table-cell text with single line
   spacing and 0/0 pt paragraph spacing; keep table titles/captions at the body
   size and manuscript line-spacing token.
+- Resolve table presentation independently. Load
+  [references/table-formatting.md](references/table-formatting.md). Unless a
+  binding/direct current source requires another scheme, convert every table
+  to the editable journal-neutral three-line profile with no vertical/internal
+  body rules or shading and a bold repeating header. Content/statistical and
+  rendered-page defects remain blocking and must not be hidden by styling.
 - In a manuscript, place exactly one structurally empty Enter-created paragraph
   between every adjacent present front-matter block: Title, Authors,
   Affiliations, optional Author notes, Correspondence, optional ORCID/identifiers,
@@ -64,6 +73,10 @@ possible.
   vocabulary, place no blank between its heading and first entry, and never
   insert empty paragraphs between consecutive author entries. Do not infer or
   rewrite author roles during format-only work.
+- Treat bullet and numbered lists as compact semantic blocks: no empty
+  paragraph between consecutive items or Key Points, none between a heading
+  and its first item, and one true empty paragraph around the whole block when
+  it meets ordinary prose.
 - In a submission-package file, one resolved token applies to every visible
   body and table-cell paragraph, including salutation, body, closing,
   signature, reviewer-comment, response, declaration, and empty separators.
@@ -104,6 +117,7 @@ manuscript to:
   body paragraph; collapse missing or duplicated semantic separators;
 - a dedicated non-body CRediT-entry role with recognized official vocabulary;
   keep supplied per-author paragraphs consecutive without empty separators;
+- compact bullet/numbered lists with no empty paragraph between items;
 - a dedicated non-body reference role after `References`/`Bibliography`; never
   insert body-prose separators between reference entries;
 - required title, authors, affiliations, and corresponding-author details in an
@@ -145,6 +159,8 @@ nonbinding and use the fallback instead.
    [references/submission-package-contract.md](references/submission-package-contract.md).
    In journal mode, also read
    [references/journal-typography-resolution.md](references/journal-typography-resolution.md).
+   For any manuscript table, read
+   [references/table-formatting.md](references/table-formatting.md).
 4. Resolve artifact lane, body/non-body styles, line spacing, front-matter roles,
    anonymization state, page-number position, and any official journal override.
 5. Edit a distinct copy. Run the applicable manuscript or package profile
@@ -172,6 +188,7 @@ python3 "$SKILL_ROOT/scripts/apply_manuscript_profile.py" input.docx \
   --title-font-size <resolved-title-pt> \
   --table-font-size <resolved-table-pt> \
   --table-line-spacing <resolved-table-spacing-token> \
+  --table-rule-scheme <three-line|full-grid|preserve-official> \
   --body-style <body-style> \
   --title-paragraph <n> --authors-paragraph <n> \
   --affiliation-paragraph <n> --author-note-paragraph <optional-n> \
@@ -203,6 +220,7 @@ python3 "$SKILL_ROOT/scripts/audit_docx_semantic_rhythm.py" release.docx \
   --expected-title-font-size <resolved-title-pt> \
   --expected-table-font-size <resolved-table-pt> \
   --expected-table-line-spacing <resolved-table-spacing-token> \
+  --expected-table-rule-scheme <resolved-table-rule-scheme> \
   --output-json release.semantic-rhythm.json
 
 python3 "$SKILL_ROOT/scripts/validate_format_release.py" \

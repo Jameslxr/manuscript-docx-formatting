@@ -92,6 +92,10 @@ The middle item must be a real empty `<w:p>`, equivalent to pressing `Enter`
 twice in consistently styled text. Require exactly one; zero or two-or-more
 fails.
 
+The empty paragraph must contain no spaces, tabs, nonbreaking spaces, or other
+whitespace-only text nodes. If found, remove that whitespace and keep the one
+empty `<w:p>`; never retain both paragraph spacing and a blank paragraph.
+
 For body prose and the empty separator:
 
 - effective space before = `0 pt`
@@ -118,6 +122,20 @@ consecutive author entries free of empty separators.
 
 This construction is a user-level output invariant, not a claim about every
 journal's native style. Record any template conflict instead of bypassing it.
+
+Treat bullets and numbered paragraphs as compact list blocks, including when
+numbering is inherited from the style. Use no empty paragraph between
+consecutive items/subitems/Key Points or between a heading and its first item.
+Use one true empty paragraph only where the whole list block meets ordinary
+prose. Preserve numbering, indentation, and item text.
+
+For any table, load [table-formatting.md](table-formatting.md). Resolve a
+binding/direct current journal scheme first; otherwise use the editable
+journal-neutral three-line fallback with top, header-bottom, and bottom rules,
+no vertical/internal body rules or shading, a bold repeating header row,
+top-aligned cells, and 10 pt single-spaced 0/0 cell text. Table content,
+statistics, cross-artifact consistency, and rendered layout are independent
+fail-closed gates.
 
 ## Line and page numbering
 
@@ -186,6 +204,11 @@ strength from `MANDATORY`, `EXPLICIT_REQUIREMENT`, `EXAMPLE_ONLY`,
 `UNSPECIFIED`, or `NOT_ASSESSABLE`. Only the first two can create an official
 override.
 
+For tables, also record the resolved rule scheme, source excerpt, rule
+strength, title/note placement, editability, statistical/content checks, and
+render verification. Use `preserve-official` only for binding/direct official
+evidence; silence or example-only guidance retains the three-line fallback.
+
 Confirm the exact journal, article type, and submission stage. Initial
 submission, revision, accepted manuscript, and proof stages can differ. Do not
 reuse another article type's template or an old publisher-wide profile as
@@ -222,7 +245,7 @@ Deliver:
 - content-preservation status based on an extracted-text comparison
 - the resolved line-spacing token and body/non-body style classification
 - the resolved title/body/table font values and manuscript/table line-spacing
-  tokens, exact source excerpt, and rule strength; an example-only value must
+  tokens, table-rule scheme, exact source excerpt, and rule strength; an example-only value must
   be recorded as fallback, not official
 - for journal mode, the source-linked checklist and any invariant/template
   conflicts
