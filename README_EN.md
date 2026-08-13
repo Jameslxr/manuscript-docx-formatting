@@ -5,13 +5,14 @@
 An independent Codex / Agent Skill that converts scientific and biomedical DOCX drafts into restrained, natural, author-prepared submission manuscripts. It performs format-only repair and does not automatically change scientific claims, citations, or article structure.
 
 [![Validate skill](https://github.com/Jameslxr/manuscript-docx-formatting/actions/workflows/validate.yml/badge.svg)](https://github.com/Jameslxr/manuscript-docx-formatting/actions/workflows/validate.yml)
-![Version](https://img.shields.io/badge/version-v1.3.0-2563eb)
+![Version](https://img.shields.io/badge/version-v1.5.0-2563eb)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 
 ## Features
 
 - Enforces effective `0 pt` paragraph spacing and removes hidden Word auto-spacing.
-- Inserts exactly one real empty Word paragraph between adjacent body paragraphs instead of simulating a blank line with paragraph spacing.
+- Inserts exactly one genuinely empty Word paragraph with no spaces/tabs between adjacent body paragraphs and never combines it with paragraph spacing.
+- Keeps consecutive Key Points, bullet items, and numbered items compact with no blank paragraph between points.
 - Uses explicit line spacing, defaulting to double spacing when no current source specifies another value.
 - Applies the same resolved line spacing to authors, affiliations, author notes,
   correspondence, ORCID/identifiers, Keywords, headings/subheadings, body text,
@@ -31,6 +32,7 @@ An independent Codex / Agent Skill that converts scientific and biomedical DOCX 
   paragraphs within one block compact. This house-style gap has no compact
   journal/template bypass.
 - Treats CRediT as a compact semantic block, checks the official 14-role vocabulary, and prohibits empty paragraphs between consecutive author entries.
+- Resolves every table against current journal rules; otherwise applies an editable three-line table with a bold repeating header, no vertical rules/shading, and separate content/statistical/render checks.
 - Supports journal-, article-type-, and submission-stage-specific official formatting overrides.
 - Separately verifies structure, front matter, semantic vertical rhythm, content preservation, journal rules, and every rendered page; only a complete pass returns `FORMAT_RELEASE_PASS`.
 
@@ -88,7 +90,7 @@ python3 -m py_compile manuscript-docx-formatting/scripts/*.py
 python3 -m unittest discover -s manuscript-docx-formatting/tests -v
 ```
 
-The current 26-test regression suite covers the full semantic front-matter gap matrix, optional Author-note and ORCID blocks, compact multi-paragraph roles, legacy compact-override rejection, compact CRediT author entries, official role vocabulary, author/affiliation size, global double and 1.5 line spacing, Keywords and section/subsection boundaries, literal body blanks, hidden auto-spacing, line/page numbering, adversarial title pages, idempotent repair, text preservation, and fail-closed release composition.
+The current 33-test regression suite covers whitespace-free true blanks, compact Key Points/lists, editable three-line tables with repeating headers, the full front-matter matrix, CRediT, global line spacing, Keywords/section boundaries, hidden auto-spacing, line/page numbering, idempotent repair, text preservation, and fail-closed release composition.
 
 ## License
 
